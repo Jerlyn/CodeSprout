@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Sight Words Explorer</title>
+<meta name="description" content="HMH Into Reading Kindergarten sight words practice — offline-friendly, playable on the go.">
+<meta name="theme-color" content="#36069A">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Sight Words">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div id="offline-banner" class="offline-banner" role="status">You're offline — everything still works, progress is saved on this device.</div>
+
+<!-- Slim header: brand + the only two controls used every single time (sound, settings) -->
+<header class="app-header">
+  <div class="app-header__inner">
+    <div class="brand-compact">
+      <div class="brand__mark" aria-hidden="true">Aa</div>
+      <span class="brand-compact__title">Sight Words</span>
+    </div>
+    <div class="header-actions">
+      <button id="progress-chip" class="progress-chip" aria-haspopup="dialog" aria-controls="progress-sheet" aria-expanded="false">
+        <span aria-hidden="true">
+          <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c1.8 3.5-2.3 4.8-2.3 8.3a2.3 2.3 0 0 0 4.6 0c0-.8-.6-1.5-.6-2.3 1.6.9 2.6 2.6 2.6 4.5a4.3 4.3 0 0 1-8.6 0C7.7 8.2 10.5 6 12 2z"></path></svg>
+          <span id="streak-count">0</span>
+          <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2.5 2.9 6 6.5.6-4.9 4.5 1.4 6.4L12 16.9 6.1 20l1.4-6.4-4.9-4.5 6.5-.6Z"></path></svg>
+          <span id="star-count">0</span>
+        </span>
+        <span class="sr-only">Open progress and badges</span>
+      </button>
+      <button id="audio-toggle-btn" class="icon-btn-sm" aria-pressed="true" aria-label="Turn word narration off">
+        <svg id="audio-icon-on" class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"></path><path d="M15.5 8.5a5 5 0 0 1 0 7"></path><path d="M18.5 6a9 9 0 0 1 0 12"></path></svg>
+        <svg id="audio-icon-off" class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden><path d="M11 5 6 9H3v6h3l5 4z"></path><line x1="16" y1="9" x2="21.5" y2="14.5"></line><line x1="21.5" y1="9" x2="16" y2="14.5"></line></svg>
+      </button>
+      <button id="settings-btn" class="icon-btn-sm" aria-haspopup="dialog" aria-controls="settings-sheet" aria-expanded="false" aria-label="Open settings">
+        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="6" x2="20" y2="6"></line><circle cx="14" cy="6" r="2"></circle><line x1="4" y1="12" x2="20" y2="12"></line><circle cx="8" cy="12" r="2"></circle><line x1="4" y1="18" x2="20" y2="18"></line><circle cx="16" cy="18" r="2"></circle></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Game content comes immediately after the header — this is the primary thing on screen -->
+<main>
+
+  <!-- FLASHCARDS -->
+  <section id="mode-flashcards" class="mode-section" role="tabpanel" aria-labelledby="tab-flashcards">
+    <div class="section-row">
+      <span class="pill" id="card-counter">Word 1 of 120</span>
+      <span class="pill pill--accent" id="card-module-tag">Module 1 · Week 1</span>
+    </div>
+
+    <div class="section-body">
+      <div class="card-flip" id="card-flip" role="button" tabindex="0" aria-label="Flip card to hear the word again">
+        <div id="card-inner" class="card-inner">
+          <div class="card-face card-face--front">
+            <span class="card-eyebrow">Sight word</span>
+            <span id="flashcard-word" class="flashcard-word">the</span>
+            <button id="hear-word-btn" class="btn btn--accent hear-word-btn"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"></path><path d="M15.5 8.5a5 5 0 0 1 0 7"></path><path d="M18.5 6a9 9 0 0 1 0 12"></path></svg> Hear it</button>
+          </div>
+          <div class="card-face card-face--back">
+            <span class="card-eyebrow">Nice work!</span>
+            <span class="flashcard-word" id="flashcard-word-back">the</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="flashcard-controls">
+        <button id="prev-card-btn" class="btn btn--ghost"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg> Back</button>
+        <button id="repeat-audio-btn" class="btn btn--icon" title="Repeat audio" aria-label="Repeat audio"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"></path><path d="M15.5 8.5a5 5 0 0 1 0 7"></path><path d="M18.5 6a9 9 0 0 1 0 12"></path></svg></button>
+        <button id="next-card-btn" class="btn btn--primary">Next <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section id="mode-quiz" class="mode-section" role="tabpanel" aria-labelledby="tab-quiz" hidden>
+    <div class="section-row">
+      <span class="pill pill--accent">Score: <span id="quiz-score">0</span></span>
+      <button id="replay-quiz-btn" class="btn btn--ghost"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"></path><path d="M15.5 8.5a5 5 0 0 1 0 7"></path><path d="M18.5 6a9 9 0 0 1 0 12"></path></svg> Say it again</button>
+    </div>
+    <div class="section-body">
+      <h2 class="task-heading">Listen, then tap the matching word</h2>
+      <p class="task-subheading">Tap the button above anytime to hear it again.</p>
+      <div id="quiz-options-grid" class="quiz-options"></div>
+      <div id="quiz-feedback" class="feedback-line" role="status" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <!-- BALLOONS -->
+  <section id="mode-balloons" class="mode-section" role="tabpanel" aria-labelledby="tab-balloons" hidden>
+    <div class="section-row">
+      <span class="pill pill--accent" id="balloon-score">Pops: 0</span>
+      <span class="pill">Find: <strong id="balloon-target">the</strong>
+        <button id="replay-balloon-btn" class="icon-btn-sm icon-btn-sm--inline" aria-label="Hear target word again"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"></path><path d="M15.5 8.5a5 5 0 0 1 0 7"></path><path d="M18.5 6a9 9 0 0 1 0 12"></path></svg></button>
+      </span>
+    </div>
+    <div class="section-body">
+      <div class="balloon-stage" id="balloon-stage">
+        <div id="balloon-field" style="position:absolute;inset:0;"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SPELLING -->
+  <section id="mode-spelling" class="mode-section" role="tabpanel" aria-labelledby="tab-spelling" hidden>
+    <div class="section-body">
+      <p class="pill pill--accent" style="margin-bottom:8px;">Spelling Practice</p>
+      <h2 class="task-heading">Spell the sight word</h2>
+      <button id="hear-spelling-btn" class="btn btn--ghost" style="margin-bottom:22px;"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"></path><path d="M15.5 8.5a5 5 0 0 1 0 7"></path><path d="M18.5 6a9 9 0 0 1 0 12"></path></svg> Hear word</button>
+      <div id="spelling-slots" class="spelling-slots"></div>
+      <div id="spelling-tiles" class="spelling-tiles"></div>
+      <div id="spelling-feedback" class="feedback-line" role="status" aria-live="polite"></div>
+      <button id="skip-spelling-btn" class="btn btn--primary" style="margin-top:20px;">Skip / Next ➡️</button>
+    </div>
+  </section>
+
+  <!-- DATASET (parent tool — reached via Settings, not the kid-facing bottom nav) -->
+  <section id="mode-dataset" class="mode-section" role="tabpanel" aria-labelledby="tab-dataset" hidden>
+    <button id="dataset-back-btn" class="btn btn--ghost" style="align-self:flex-start;margin-bottom:14px;">⬅️ Back to games</button>
+    <div class="section-row">
+      <h2 class="task-heading" style="margin:0;">Full word list (120 words)</h2>
+      <button id="copy-json-btn" class="btn btn--ghost">📋 Copy JSON</button>
+    </div>
+    <div class="dataset-panel">
+      <pre id="json-display" class="dataset-json"></pre>
+    </div>
+  </section>
+
+</main>
+
+<!-- Bottom tab bar — the 4 kid-facing games, thumb-reachable for one-handed use -->
+<nav class="bottom-nav" role="tablist" aria-label="Game modes">
+  <button class="nav-tab" role="tab" id="tab-flashcards" aria-selected="true" aria-controls="mode-flashcards">
+    <span class="nav-tab__icon"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="14" height="14" rx="3"></rect><rect x="7" y="3" width="14" height="14" rx="3"></rect></svg></span><span class="nav-tab__label">Cards</span>
+  </button>
+  <button class="nav-tab" role="tab" id="tab-quiz" aria-selected="false" aria-controls="mode-quiz">
+    <span class="nav-tab__icon"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="5"></circle><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"></circle></svg></span><span class="nav-tab__label">Match</span>
+  </button>
+  <button class="nav-tab" role="tab" id="tab-balloons" aria-selected="false" aria-controls="mode-balloons">
+    <span class="nav-tab__icon"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="10" rx="6" ry="7"></ellipse><path d="M9.5 17.5 12 20.5 14.5 17.5"></path></svg></span><span class="nav-tab__label">Pop</span>
+  </button>
+  <button class="nav-tab" role="tab" id="tab-spelling" aria-selected="false" aria-controls="mode-spelling">
+    <span class="nav-tab__icon"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"></path><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg></span><span class="nav-tab__label">Spell</span>
+  </button>
+</nav>
+<!-- Hidden control kept for JS mode-switching logic; dataset isn't a bottom-nav tab, see Settings sheet -->
+<button id="tab-dataset" aria-controls="mode-dataset" hidden></button>
+
+<!-- Progress sheet: streak, stars, badges — opt-in detail, not permanent chrome -->
+<div class="sheet-backdrop" id="progress-backdrop" hidden></div>
+<div class="sheet" id="progress-sheet" role="dialog" aria-modal="true" aria-labelledby="progress-sheet-title" hidden>
+  <div class="sheet__handle" aria-hidden="true"></div>
+  <div class="sheet__header">
+    <h2 id="progress-sheet-title" class="sheet__title">My Progress</h2>
+    <button class="sheet__close" id="progress-sheet-close" aria-label="Close">✕</button>
+  </div>
+  <div class="progress-summary">
+    <div class="progress-summary__item"><span class="progress-summary__num"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2c1.8 3.5-2.3 4.8-2.3 8.3a2.3 2.3 0 0 0 4.6 0c0-.8-.6-1.5-.6-2.3 1.6.9 2.6 2.6 2.6 4.5a4.3 4.3 0 0 1-8.6 0C7.7 8.2 10.5 6 12 2z"></path></svg> <span id="streak-count-lg">0</span></span><span class="progress-summary__label">day streak</span></div>
+    <div class="progress-summary__item"><span class="progress-summary__num"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 2.5 2.9 6 6.5.6-4.9 4.5 1.4 6.4L12 16.9 6.1 20l1.4-6.4-4.9-4.5 6.5-.6Z"></path></svg> <span id="star-count-lg">0</span></span><span class="progress-summary__label">stars earned</span></div>
+  </div>
+  <h3 class="sheet__subtitle">Badges</h3>
+  <div class="badge-row" id="badge-row" aria-label="Badges earned"></div>
+</div>
+
+<!-- Settings sheet: word-set filter, install app, full word list, sound -->
+<div class="sheet-backdrop" id="settings-backdrop" hidden></div>
+<div class="sheet" id="settings-sheet" role="dialog" aria-modal="true" aria-labelledby="settings-sheet-title" hidden>
+  <div class="sheet__handle" aria-hidden="true"></div>
+  <div class="sheet__header">
+    <h2 id="settings-sheet-title" class="sheet__title">Settings</h2>
+    <button class="sheet__close" id="settings-sheet-close" aria-label="Close">✕</button>
+  </div>
+
+  <h3 class="sheet__subtitle">Practice which words?</h3>
+  <div class="module-grid" id="module-grid" role="group" aria-label="Choose word module"></div>
+
+  <h3 class="sheet__subtitle">Reading voice</h3>
+  <label for="voice-select" class="sr-only">Choose narration voice</label>
+  <select id="voice-select" class="select-input"></select>
+  <button id="test-voice-btn" class="btn btn--ghost sheet__wide-btn" style="margin-top:10px;"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"></path><path d="M15.5 8.5a5 5 0 0 1 0 7"></path><path d="M18.5 6a9 9 0 0 1 0 12"></path></svg> Test this voice</button>
+
+  <h3 class="sheet__subtitle">More</h3>
+  <button id="open-dataset-btn" class="btn btn--ghost sheet__wide-btn">📊 View full word list</button>
+  <button id="install-app-btn" class="btn btn--primary sheet__wide-btn" hidden>⬇️ Install app to home screen</button>
+  <p class="sheet__hint" id="install-hint">On Android, tap the ⋮ menu in Chrome and choose <strong>Install app</strong> or <strong>Add to Home screen</strong>. On iPhone, tap Share → <strong>Add to Home Screen</strong>.</p>
+
+  <h3 class="sheet__subtitle">Reset</h3>
+  <button id="reset-progress-btn" class="btn btn--ghost sheet__wide-btn btn--danger">🗑️ Reset stars, streak &amp; badges</button>
+  <p class="sheet__hint">This clears stars, streak, and badges on this device only. Sound and voice settings stay as they are.</p>
+
+  <p class="sheet__meta">HMH Into Reading · Kindergarten High Frequency Words · 120 words</p>
+</div>
+
+<canvas id="confetti-canvas" aria-hidden="true"></canvas>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
