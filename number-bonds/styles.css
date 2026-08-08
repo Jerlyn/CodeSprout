@@ -568,18 +568,26 @@ main {
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
 }
+/* Digits are a supporting action (typed repeatedly, low stakes each time), so
+   they get the purple-tint treatment — same tier as .btn--accent. Solid purple
+   stays reserved for Check Answer, the one primary action on this screen. */
 .key-tile {
   min-height: 56px;
   border-radius: var(--radius-sm);
-  background: var(--purple);
-  color: var(--white);
+  background: var(--purple-tint);
+  color: var(--purple);
   font-size: 1.35rem;
   font-weight: 800;
-  box-shadow: var(--shadow-btn);
+  box-shadow: none;
+  border: 2px solid transparent;
+  transition: transform .12s ease, background .15s ease;
 }
-.key-tile:active { transform: scale(0.94); }
+.key-tile:hover { background: #E1D8F7; }
+.key-tile:active { transform: scale(0.94); background: #E1D8F7; }
 .key-tile--ghost { background: var(--bg); color: var(--text-primary); border: 2px solid var(--gray-200); box-shadow: none; font-size: 1rem; }
+.key-tile--ghost:hover, .key-tile--ghost:active { background: var(--gray-200); }
 .key-tile--danger { background: var(--white); color: var(--error); border: 2px solid #F3D2CE; box-shadow: none; }
+.key-tile--danger:hover, .key-tile--danger:active { background: var(--error-bg); }
 
 .bond-actions { width: 100%; max-width: 420px; display: flex; gap: 10px; margin-top: 16px; }
 .bond-actions .btn--primary { flex: 1; }
