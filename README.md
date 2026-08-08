@@ -5,6 +5,7 @@ Small, offline-friendly learning apps built for my daughter, one folder per app.
 ## Apps
 
 - **[sight-words](./sight-words)** — HMH Into Reading Kindergarten high-frequency words. Flashcards, Listen & Match, Balloon Pop, and Word Builder, with a daily streak, stars, and badges. Works offline as an installable PWA.
+- **[number-bonds](./number-bonds)** — Part-part-whole addition/subtraction facts. Bond-tree flashcard practice plus a printable worksheet grid, with a daily streak, stars, and badges. Works offline as an installable PWA.
 
 ## Adding a new app
 
